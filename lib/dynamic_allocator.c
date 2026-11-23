@@ -138,8 +138,31 @@ void free_block(void *va)
 {
 	//TODO: [PROJECT'26.GM#1] DYNAMIC ALLOCATOR - [3] free_block
 	//Your code is here
-	//Comment the following line
-	panic("free_block() not implemented");
+	struct BlockMetaData *element = va - META_DATA_SIZE;
+	uint8 level = element->level;
+	uint8 status = element->is_free;
+	struct BlockList * block_ptr = &freeBlockLists[level];
+	struct BlockMetaData * left_buddy = element + BLOCK_SIZE(level);
+
+	struct BlockMetaData * right_buddy = element - left_buddy;
+
+	/* add to the list and update data structure */
+	status = 1;
+	LIST_INSERT_HEAD(block_ptr, element);
+
+	/*Buddy not allocated*/
+	if(right_buddy->is_free == 1)
+	{
+
+
+	}
+
+	/*Buddy allocated*/
+	else if(right_buddy->is_free == 0 /* || */ /* not in the same level*/)
+	{
+		return;
+	}
+
 }
 
 //=================================================================================//
